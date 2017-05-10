@@ -78,7 +78,7 @@ public class Board extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawRect(300, 300, 1000, 1000, boundaries);
+        canvas.drawRect(100, 100, 800, 800, boundaries);
 
         for (Vector2 pos : inputPoints) {
             dest.set((int) pos.x - brushSize, (int) pos.y - brushSize, (int) pos.x + brushSize, (int) pos.y + brushSize);
@@ -88,15 +88,15 @@ public class Board extends View {
 
         // square size is 300 pixels (hardcode value just for now)
         if (animateCircle) {
-            shape.drawShape(CIRCLE, 0, canvas, new Rect(300, 1500, 600, 1800), v);
+            shape.drawShape(CIRCLE, 0, canvas, new Rect(100, 1200, 400, 1500), v);
         } else if (drawnCircle) {
-            shape.drawShape(CIRCLE, 0, canvas, new Rect(300, 1500, 600, 1800), 1f);
+            shape.drawShape(CIRCLE, 0, canvas, new Rect(100, 1200, 400, 1500), 1f);
         }
 
         if (animateX) {
-            shape.drawShape(Constants.X, 0, canvas, new Rect(900, 1500, 1200, 1800), v);
+            shape.drawShape(Constants.X, 0, canvas, new Rect(700, 1200, 1000, 1500), v);
         } else if (drawnX) {
-            shape.drawShape(Constants.X, 0, canvas, new Rect(900, 1500, 1200, 1800), 1f);
+            shape.drawShape(Constants.X, 0, canvas, new Rect(700, 1200, 1000, 1500), 1f);
         }
     }
 
