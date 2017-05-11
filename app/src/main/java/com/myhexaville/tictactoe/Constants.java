@@ -1,4 +1,6 @@
-package com.myhexaville.tictactoe.model;
+package com.myhexaville.tictactoe;
+
+import com.myhexaville.tictactoe.model.Vector2;
 
 import java.util.ArrayList;
 
@@ -11,12 +13,19 @@ import java.util.ArrayList;
 *  Due to input being build on 24 dp brush
 * */
 public class Constants {
-    public static final int CIRCLE = 0;
-    public static final int X = 1;
+    public static final int NONE = 0;
+    public static final int CIRCLE = 1;
+    public static final int X = 2;
+
+    public static final int VERTICAL = 0;
+    public static final int HORIZONTAL = 1;
+    public static final int DIAGONAL_RISING = 2;
+    public static final int DIAGONAL_FALLING = 3;
 
     public static final ArrayList<Vector2> circleOnePoints;
     public static final ArrayList<Vector2> circleTwoPoints;
     public static final ArrayList<Vector2> xOnePoints;
+
 
     static {
         circleOnePoints = new ArrayList<>();
@@ -92,7 +101,6 @@ public class Constants {
         circleTwoPoints.add(new Vector2(0.76586384f, 0.41393432f));
         circleTwoPoints.add(new Vector2(0.7715918f, 0.3524087f));
         circleTwoPoints.add(new Vector2(0.7657143f, 0.3042857f));
-
 
         xOnePoints = new ArrayList<>();
         xOnePoints.add(new Vector2(0.19857143f, 0.17f));
