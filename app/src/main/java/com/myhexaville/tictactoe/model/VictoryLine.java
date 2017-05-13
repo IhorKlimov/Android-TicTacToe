@@ -19,13 +19,12 @@ public class VictoryLine {
     private final Paint victoryLine;
     private int victoryLineSize;
 
-    public VictoryLine(Context context, int topLeft, int horizontalLineMargin, int shapeSizeInPixels, int width, int lineSize, int victoryLineSize) {
+    public VictoryLine(Context context, int topLeft, int horizontalLineMargin, int shapeSizeInPixels, int width, int lineSize) {
         this.topLeft = topLeft;
         this.horizontalLineMargin = horizontalLineMargin;
         this.shapeSizeInPixels = shapeSizeInPixels;
         this.width = width;
         this.lineSize = lineSize;
-        this.victoryLineSize = victoryLineSize;
 
         victoryLine = new Paint();
         victoryLine.setColor(Color.parseColor("#E53935"));

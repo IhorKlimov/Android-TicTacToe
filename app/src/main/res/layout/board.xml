@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:clickable="false"
+        android:id="@+id/background"
+        android:src="@drawable/chalkboard2" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/text"
+        android:layout_gravity="center"
+        android:textSize="62sp"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:textStyle="bold"
+        android:elevation="4dp"
+        android:layout_marginTop="48dp"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:text="RESTART"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/restart"
+        android:visibility="gone"
+        android:textSize="24sp"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

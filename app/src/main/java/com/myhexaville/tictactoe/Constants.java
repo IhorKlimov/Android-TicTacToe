@@ -22,6 +22,10 @@ public class Constants {
     public static final int DIAGONAL_RISING = 2;
     public static final int DIAGONAL_FALLING = 3;
 
+    public static final int DRAFT = 10;
+    public static final int ME = 11;
+    public static final int ENEMY = 12;
+
     public static final ArrayList<Vector2> circleOnePoints;
     public static final ArrayList<Vector2> circleTwoPoints;
     public static final ArrayList<Vector2> xOnePoints;

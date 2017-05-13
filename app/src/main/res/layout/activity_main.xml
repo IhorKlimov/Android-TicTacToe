@@ -8,17 +8,12 @@
         android:layout_height="match_parent"
         tools:context="com.myhexaville.tictactoe.MainActivity">
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#000"
-            android:scaleType="centerCrop"
-            android:src="@drawable/chalkboard" />
 
         <com.myhexaville.tictactoe.Board
             android:id="@+id/canvas"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
 
     </FrameLayout>
 </layout>

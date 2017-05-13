@@ -2,13 +2,13 @@ package com.myhexaville.tictactoe.model;
 
 public class Victory {
     public int row, col, lineType;
-    public boolean isMe;
+    public int winner;
 
-    public Victory(int row, int col, int lineType, boolean isMe) {
+    public Victory(int row, int col, int lineType, int winner) {
         this.row = row;
         this.col = col;
         this.lineType = lineType;
-        this.isMe = isMe;
+        this.winner = winner;
     }
 
     @Override
@@ -17,7 +17,7 @@ public class Victory {
                 "row=" + row +
                 ", col=" + col +
                 ", lineType=" + lineType +
-                ", isMe=" + isMe +
+                ", winner=" + winner +
                 '}';
     }
 }

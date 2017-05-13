@@ -6,17 +6,27 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.myhexaville.tictactoe.model.Point;
 import com.myhexaville.tictactoe.model.Shape;
@@ -25,6 +35,9 @@ import com.myhexaville.tictactoe.model.VictoryLine;
 
 import static android.graphics.Paint.Style.STROKE;
 import static com.myhexaville.tictactoe.Constants.CIRCLE;
+import static com.myhexaville.tictactoe.Constants.DRAFT;
+import static com.myhexaville.tictactoe.Constants.ENEMY;
+import static com.myhexaville.tictactoe.Constants.ME;
 import static com.myhexaville.tictactoe.Constants.NONE;
 
 public class Board extends FrameLayout {
@@ -35,6 +48,8 @@ public class Board extends FrameLayout {
     public static final int HORIZONTAL_LINE_MARGIN_IN_DP = 16;
     public static final int DRAW_ANIMATION_SPEED = 500;
     public static final int AI_TURN_DELAY = 300;
+    private View restart;
+    private TextView text;
     private int horizontalLineMargin;
     private int shapeSizeInPixels;
 
@@ -58,10 +73,11 @@ public class Board extends FrameLayout {
 
     private Victory victory;
     private boolean isDrawing;
-    private int victoryLineSize;
     private VictoryLine victoryLine;
     private AI ai;
     private boolean aiTurn;
+    private ImageView background;
+    private boolean done;
 
     public Board(Context context) {
         super(context);
@@ -69,6 +85,14 @@ public class Board extends FrameLayout {
 
     public Board(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+        inflate(context, R.layout.board, this);
+        background = (ImageView) findViewById(R.id.background);
+        text = (TextView) findViewById(R.id.text);
+        restart = findViewById(R.id.restart);
+        restart.setOnClickListener(v1 -> {
+            restart();
+        });
 
         lineSize = (int) (getResources().getDisplayMetrics().density * LINE_SIZE_IN_DP);
         horizontalLineMargin = (int) (getResources().getDisplayMetrics().density * HORIZONTAL_LINE_MARGIN_IN_DP);
@@ -112,25 +136,27 @@ public class Board extends FrameLayout {
         twoOne = new Rect(shapeSizeInPixels + lineSize, topLeft + lineSize * 2 + shapeSizeInPixels * 2, shapeSizeInPixels * 2 + lineSize, topLeft + lineSize * 2 + shapeSizeInPixels * 3);
         twoTwo = new Rect(shapeSizeInPixels * 2 + lineSize * 2, topLeft + lineSize * 2 + shapeSizeInPixels * 2, shapeSizeInPixels * 3 + lineSize * 2, topLeft + lineSize * 2 + shapeSizeInPixels * 3);
 
-        victoryLine = new VictoryLine(getContext(), topLeft, horizontalLineMargin, shapeSizeInPixels, width, lineSize, victoryLineSize);
+        victoryLine = new VictoryLine(getContext(), topLeft, horizontalLineMargin, shapeSizeInPixels, width, lineSize);
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
+        Log.d(TAG, "dispatchDraw: ");
+        if (!done) {
+            drawLines(canvas);
 
-        drawLines(canvas);
+            // square size is 300 pixels (hardcode value just for now)
+            Rect r = getRect(currentPoint.x, currentPoint.y);
 
-        // square size is 300 pixels (hardcode value just for now)
-        Rect r = getRect(currentPoint.x, currentPoint.y);
+            if (currentAnimationShape != NONE) {
+                shape.drawShape(currentAnimationShape, 0, canvas, r, v);
+            }
 
-        if (currentAnimationShape != NONE) {
-            shape.drawShape(currentAnimationShape, 0, canvas, r, v);
+            drawPreviousShapes(canvas);
+
+            checkVictory(canvas);
         }
-
-        drawPreviousShapes(canvas);
-
-        checkVictory(canvas);
     }
 
     @Override
@@ -273,8 +299,74 @@ public class Board extends FrameLayout {
 
     private void checkVictory(Canvas canvas) {
         if (victory != null) {
-            victoryLine.draw(canvas, victory);
+            if (victory.winner != DRAFT) {
+                victoryLine.draw(canvas, victory);
+            }
+            new Handler().postDelayed(() -> {
+                if (!done) {
+                    Log.d(TAG, "checkVictory: ");
+                    //define this only once if blurring multiple times
+                    RenderScript rs = RenderScript.create(getContext());
+
+                    setDrawingCacheEnabled(true);
+                    buildDrawingCache();
+                    Bitmap board = getDrawingCache();
+
+                    background.setDrawingCacheEnabled(true);
+                    background.buildDrawingCache();
+                    Bitmap back = background.getDrawingCache();
+                    final Allocation input = Allocation.createFromBitmap(rs, board); //use this constructor for best performance, because it uses USAGE_SHARED mode which reuses memory
+                    final Allocation output = Allocation.createTyped(rs, input.getType());
+                    final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+                    script.setRadius(25f);
+                    script.setInput(input);
+                    script.forEach(output);
+                    output.copyTo(board);
+
+                    background.setImageBitmap(board);
+                    background.setBackground(new BitmapDrawable(getResources(), back));
+                    done = true;
+
+
+                    if (victory.winner == ME) {
+                        text.setTextColor(Color.parseColor("#4CAF50"));
+                        text.setText("YOU WIN!");
+                    } else if (victory.winner == ENEMY) {
+                        text.setTextColor(Color.parseColor("#FF5722"));
+                        text.setText("YOU LOOSE!");
+                    } else if (victory.winner == DRAFT) {
+                        text.setTextColor(Color.parseColor("#9E9E9E"));
+                        text.setText("DRAFT");
+                    }
+
+                    text.animate().scaleY(1f).scaleX(1f).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            restart.setVisibility(VISIBLE);
+                        }
+                    }).start();
+                }
+            }, 500);
         }
+    }
+
+    private void restart() {
+        destroyDrawingCache();
+        restart.setVisibility(GONE);
+        text.setScaleX(0f);
+        text.setScaleY(0f);
+        currentAnimationShape = 0;
+        v = 0f;
+        victory = null;
+        isDrawing = false;
+        field = new int[3][3];
+        aiTurn = false;
+        done = false;
+        ai = new AI(MY_SHAPE, AI_SHAPE, field);
+        background.setImageResource(R.drawable.chalkboard2);
+        background.setBackground(null);
+        invalidate();
     }
 
 }
