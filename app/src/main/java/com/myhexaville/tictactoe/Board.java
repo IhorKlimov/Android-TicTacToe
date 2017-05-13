@@ -16,20 +16,18 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.FrameLayout;
 
 import com.myhexaville.tictactoe.model.Point;
 import com.myhexaville.tictactoe.model.Shape;
 import com.myhexaville.tictactoe.model.Victory;
+import com.myhexaville.tictactoe.model.VictoryLine;
 
 import static android.graphics.Paint.Style.STROKE;
 import static com.myhexaville.tictactoe.Constants.CIRCLE;
-import static com.myhexaville.tictactoe.Constants.DIAGONAL_RISING;
-import static com.myhexaville.tictactoe.Constants.HORIZONTAL;
 import static com.myhexaville.tictactoe.Constants.NONE;
-import static com.myhexaville.tictactoe.Constants.VERTICAL;
 
-public class Board extends View {
+public class Board extends FrameLayout {
     private static final String TAG = "CanvasBrushDrawing";
     public static final int BRUSH_SIZE_IN_DP = 24;
     public static final int SHAPE_SIZE_IN_DP = 200;
@@ -61,7 +59,7 @@ public class Board extends View {
     private Victory victory;
     private boolean isDrawing;
     private int victoryLineSize;
-    private Paint victoryLine;
+    private VictoryLine victoryLine;
     private AI ai;
     private boolean aiTurn;
 
@@ -75,13 +73,6 @@ public class Board extends View {
         lineSize = (int) (getResources().getDisplayMetrics().density * LINE_SIZE_IN_DP);
         horizontalLineMargin = (int) (getResources().getDisplayMetrics().density * HORIZONTAL_LINE_MARGIN_IN_DP);
         shape = new Shape(context);
-
-        victoryLine = new Paint();
-        victoryLine.setColor(Color.parseColor("#E53935"));
-        victoryLine.setStyle(STROKE);
-        victoryLine.setStrokeCap(Paint.Cap.ROUND);
-        victoryLineSize = (int) (getResources().getDisplayMetrics().density * 20);
-        victoryLine.setStrokeWidth(victoryLineSize);
 
         ai = new AI(MY_SHAPE, AI_SHAPE, field);
     }
@@ -120,11 +111,13 @@ public class Board extends View {
         twoZero = new Rect(0, topLeft + lineSize * 2 + shapeSizeInPixels * 2, shapeSizeInPixels, topLeft + lineSize * 2 + shapeSizeInPixels * 3);
         twoOne = new Rect(shapeSizeInPixels + lineSize, topLeft + lineSize * 2 + shapeSizeInPixels * 2, shapeSizeInPixels * 2 + lineSize, topLeft + lineSize * 2 + shapeSizeInPixels * 3);
         twoTwo = new Rect(shapeSizeInPixels * 2 + lineSize * 2, topLeft + lineSize * 2 + shapeSizeInPixels * 2, shapeSizeInPixels * 3 + lineSize * 2, topLeft + lineSize * 2 + shapeSizeInPixels * 3);
+
+        victoryLine = new VictoryLine(getContext(), topLeft, horizontalLineMargin, shapeSizeInPixels, width, lineSize, victoryLineSize);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
 
         drawLines(canvas);
 
@@ -278,30 +271,9 @@ public class Board extends View {
         animator.start();
     }
 
-    //todo implement rest of lines
     private void checkVictory(Canvas canvas) {
         if (victory != null) {
-            if (victory.lineType == HORIZONTAL) {
-                if (victory.row == 0) {
-                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels / 2 - victoryLineSize / 2, width - horizontalLineMargin, topLeft + shapeSizeInPixels / 2 - victoryLineSize / 2, victoryLine);
-                } else if (victory.row == 1) {
-                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 1.5f - victoryLineSize / 2 + lineSize, width - horizontalLineMargin, topLeft + shapeSizeInPixels * 1.5f - victoryLineSize / 2 + lineSize, victoryLine);
-                } else {
-                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 2.5f - victoryLineSize / 2 + lineSize * 2, width - horizontalLineMargin, topLeft + shapeSizeInPixels * 2.5f - victoryLineSize / 2 + lineSize * 2, victoryLine);
-                }
-            } else if (victory.lineType == VERTICAL) {
-                if (victory.col == 0) {
-                    canvas.drawLine(shapeSizeInPixels / 2 + lineSize / 2, topLeft, shapeSizeInPixels / 2 + lineSize / 2, topLeft + shapeSizeInPixels * 3 + lineSize * 2, victoryLine);
-                } else if (victory.col == 1) {
-                    canvas.drawLine(shapeSizeInPixels * 1.5f + lineSize, topLeft, shapeSizeInPixels * 1.5f + lineSize, topLeft + shapeSizeInPixels * 3 + lineSize * 2, victoryLine);
-                } else {
-                    canvas.drawLine(shapeSizeInPixels * 2.5f + lineSize * 1.5f, topLeft, shapeSizeInPixels * 2.5f + lineSize * 1.5f, topLeft + shapeSizeInPixels * 3 + lineSize * 2, victoryLine);
-                }
-            } else if (victory.lineType == DIAGONAL_RISING) {
-                canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 3 + lineSize * 2 - lineSize/2, width-horizontalLineMargin, topLeft + lineSize/2, victoryLine);
-            } else {
-                canvas.drawLine(horizontalLineMargin, topLeft + lineSize/2, width-horizontalLineMargin, topLeft + shapeSizeInPixels * 3 + lineSize * 2 - lineSize/2, victoryLine);
-            }
+            victoryLine.draw(canvas, victory);
         }
     }
 
