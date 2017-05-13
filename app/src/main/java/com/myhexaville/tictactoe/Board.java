@@ -61,7 +61,7 @@ public class Board extends View {
     private Victory victory;
     private boolean isDrawing;
     private int victoryLineSize;
-    private Paint victiryLine;
+    private Paint victoryLine;
     private AI ai;
     private boolean aiTurn;
 
@@ -76,12 +76,12 @@ public class Board extends View {
         horizontalLineMargin = (int) (getResources().getDisplayMetrics().density * HORIZONTAL_LINE_MARGIN_IN_DP);
         shape = new Shape(context);
 
-        victiryLine = new Paint();
-        victiryLine.setColor(Color.parseColor("#E53935"));
-        victiryLine.setStyle(STROKE);
-        victiryLine.setStrokeCap(Paint.Cap.ROUND);
+        victoryLine = new Paint();
+        victoryLine.setColor(Color.parseColor("#E53935"));
+        victoryLine.setStyle(STROKE);
+        victoryLine.setStrokeCap(Paint.Cap.ROUND);
         victoryLineSize = (int) (getResources().getDisplayMetrics().density * 20);
-        victiryLine.setStrokeWidth(victoryLineSize);
+        victoryLine.setStrokeWidth(victoryLineSize);
 
         ai = new AI(MY_SHAPE, AI_SHAPE, field);
     }
@@ -283,24 +283,24 @@ public class Board extends View {
         if (victory != null) {
             if (victory.lineType == HORIZONTAL) {
                 if (victory.row == 0) {
-                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels / 2 - victoryLineSize / 2, width - horizontalLineMargin, topLeft + shapeSizeInPixels / 2 - victoryLineSize / 2, victiryLine);
+                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels / 2 - victoryLineSize / 2, width - horizontalLineMargin, topLeft + shapeSizeInPixels / 2 - victoryLineSize / 2, victoryLine);
                 } else if (victory.row == 1) {
-                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 1.5f - victoryLineSize / 2 + lineSize, width - horizontalLineMargin, topLeft + shapeSizeInPixels * 1.5f - victoryLineSize / 2 + lineSize, victiryLine);
+                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 1.5f - victoryLineSize / 2 + lineSize, width - horizontalLineMargin, topLeft + shapeSizeInPixels * 1.5f - victoryLineSize / 2 + lineSize, victoryLine);
                 } else {
-                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 2.5f - victoryLineSize / 2 + lineSize * 2, width - horizontalLineMargin, topLeft + shapeSizeInPixels * 2.5f - victoryLineSize / 2 + lineSize * 2, victiryLine);
+                    canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 2.5f - victoryLineSize / 2 + lineSize * 2, width - horizontalLineMargin, topLeft + shapeSizeInPixels * 2.5f - victoryLineSize / 2 + lineSize * 2, victoryLine);
                 }
             } else if (victory.lineType == VERTICAL) {
                 if (victory.col == 0) {
-
+                    canvas.drawLine(shapeSizeInPixels / 2 + lineSize / 2, topLeft, shapeSizeInPixels / 2 + lineSize / 2, topLeft + shapeSizeInPixels * 3 + lineSize * 2, victoryLine);
                 } else if (victory.col == 1) {
-
+                    canvas.drawLine(shapeSizeInPixels * 1.5f + lineSize, topLeft, shapeSizeInPixels * 1.5f + lineSize, topLeft + shapeSizeInPixels * 3 + lineSize * 2, victoryLine);
                 } else {
-
+                    canvas.drawLine(shapeSizeInPixels * 2.5f + lineSize * 1.5f, topLeft, shapeSizeInPixels * 2.5f + lineSize * 1.5f, topLeft + shapeSizeInPixels * 3 + lineSize * 2, victoryLine);
                 }
             } else if (victory.lineType == DIAGONAL_RISING) {
-
+                canvas.drawLine(horizontalLineMargin, topLeft + shapeSizeInPixels * 3 + lineSize * 2 - lineSize/2, width-horizontalLineMargin, topLeft + lineSize/2, victoryLine);
             } else {
-
+                canvas.drawLine(horizontalLineMargin, topLeft + lineSize/2, width-horizontalLineMargin, topLeft + shapeSizeInPixels * 3 + lineSize * 2 - lineSize/2, victoryLine);
             }
         }
     }
