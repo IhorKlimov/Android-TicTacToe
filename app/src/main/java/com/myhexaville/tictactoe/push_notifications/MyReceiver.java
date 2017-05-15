@@ -61,10 +61,15 @@ public class MyReceiver extends BroadcastReceiver {
                         });
 
                         if (intent.getAction().equals("accept")) {
+                            String gameId = withId + "-" + getCurrentUserId();
+                            FirebaseDatabase.getInstance().getReference().child("games")
+                                    .child(gameId)
+                                    .setValue(null);
+
                             context.startActivity(new Intent(context, MainActivity.class)
                                     .putExtra("type", "wifi")
                                     .putExtra("me", "o")
-                                    .putExtra("gameId", withId + "-" + getCurrentUserId())
+                                    .putExtra("gameId", gameId)
                                     .putExtra("with", withId));
                         }
                     }

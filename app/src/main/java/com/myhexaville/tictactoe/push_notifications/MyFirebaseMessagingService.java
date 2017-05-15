@@ -10,6 +10,7 @@ import android.support.v4.app.RemoteInput;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.myhexaville.tictactoe.MainActivity;
@@ -38,6 +39,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .putExtra("to", fromPushId);
 
             PendingIntent pendingIntentReject = PendingIntent.getBroadcast(this, 0, rejectIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            String gameId = fromId + "-" + getCurrentUserId();
+//            FirebaseDatabase.getInstance().getReference().child("games")
+//                    .child(gameId)
+//                    .setValue(null);
 
             Intent rejectAccept = new Intent("accept")
                     .putExtra("withId", fromId)
