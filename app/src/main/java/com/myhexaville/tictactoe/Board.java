@@ -6,8 +6,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,7 +27,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.myhexaville.tictactoe.model.Point;
 import com.myhexaville.tictactoe.model.Shape;
 import com.myhexaville.tictactoe.model.Victory;
@@ -39,6 +44,8 @@ import static com.myhexaville.tictactoe.Constants.DRAFT;
 import static com.myhexaville.tictactoe.Constants.ENEMY;
 import static com.myhexaville.tictactoe.Constants.ME;
 import static com.myhexaville.tictactoe.Constants.NONE;
+import static com.myhexaville.tictactoe.Constants.X;
+import static com.myhexaville.tictactoe.Util.getCurrentUserId;
 
 public class Board extends FrameLayout {
     private static final String TAG = "CanvasBrushDrawing";
@@ -75,9 +82,12 @@ public class Board extends FrameLayout {
     private boolean isDrawing;
     private VictoryLine victoryLine;
     private AI ai;
-    private boolean aiTurn;
+    private boolean isMyTurn = true;
     private ImageView background;
     private boolean done;
+    private boolean isWIfi;
+    private String otherUserId;
+    private String gameId;
 
     public Board(Context context) {
         super(context);
@@ -91,7 +101,18 @@ public class Board extends FrameLayout {
         text = (TextView) findViewById(R.id.text);
         restart = findViewById(R.id.restart);
         restart.setOnClickListener(v1 -> {
-            restart();
+            if (!isWIfi) {
+                restart();
+            } else {
+                FirebaseDatabase.getInstance().getReference().child("games")
+                        .child(gameId)
+                        .setValue(null);
+
+                FirebaseDatabase.getInstance().getReference().child("games")
+                        .child(gameId)
+                        .child("restart")
+                        .setValue(System.currentTimeMillis());
+            }
         });
 
         lineSize = (int) (getResources().getDisplayMetrics().density * LINE_SIZE_IN_DP);
@@ -161,7 +182,7 @@ public class Board extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (aiTurn || victory != null) {
+        if (!isMyTurn || victory != null) {
             return true;
         }
 
@@ -285,12 +306,22 @@ public class Board extends FrameLayout {
                 }
                 isDrawing = false;
 
-                aiTurn = !aiTurn;
-                if (aiTurn && victory == null) {
-                    ai.makeDecision();
-                    new Handler().postDelayed(() -> {
-                        drawShape(ai.getRow(), ai.getCol(), AI_SHAPE);
-                    }, AI_TURN_DELAY);
+                isMyTurn = !isMyTurn;
+
+                Log.d(TAG, "onAnimationEnd: "+ isWIfi);
+                if (!isWIfi) {
+                    if (!isMyTurn && victory == null) {
+                        Log.d(TAG, "onAnimationEnd: ai");
+                        ai.makeDecision();
+                        new Handler().postDelayed(() -> {
+                            drawShape(ai.getRow(), ai.getCol(), AI_SHAPE);
+                        }, AI_TURN_DELAY);
+                    }
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("games")
+                            .child(gameId)
+                            .child(row + "_" + col)
+                            .setValue(MY_SHAPE);
                 }
             }
         });
@@ -361,7 +392,11 @@ public class Board extends FrameLayout {
         victory = null;
         isDrawing = false;
         field = new int[3][3];
-        aiTurn = false;
+        if (!isWIfi) {
+            isMyTurn = true;
+        } else {
+            isMyTurn = MY_SHAPE == Constants.X;
+        }
         done = false;
         ai = new AI(MY_SHAPE, AI_SHAPE, field);
         background.setImageResource(R.drawable.chalkboard2);
@@ -369,4 +404,74 @@ public class Board extends FrameLayout {
         invalidate();
     }
 
+    public void setWifiWith(String withId) {
+        isWIfi = true;
+        otherUserId = withId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+        Log.d(TAG, "setGameId: " + gameId);
+        FirebaseDatabase.getInstance().getReference().child("games")
+                .child(gameId)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        if (dataSnapshot.getValue() == null) {
+                            return;
+                        }
+                        String key = dataSnapshot.getKey();
+                        if (!key.equals("restart")) {
+                            int row = Integer.parseInt(key.substring(0, 1));
+                            int col = Integer.parseInt(key.substring(2, 3));
+                            Integer shape = dataSnapshot.getValue(Integer.class);
+
+                            if (field[row][col] == NONE) {
+                                drawShape(row, col, shape);
+                            }
+                        } else {
+                            restart();
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        if (dataSnapshot.getValue() == null) {
+                            return;
+                        }
+                        if (dataSnapshot.getKey().equals("restart")) {
+                            restart();
+
+                        }
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void setMe(String me) {
+        if (me.equals("x")) {
+            isMyTurn = true;
+            Toast.makeText(getContext(), "Your turn", Toast.LENGTH_SHORT);
+            MY_SHAPE = Constants.X;
+        } else {
+            isMyTurn = false;
+            Toast.makeText(getContext(), "Opponent's turn", Toast.LENGTH_SHORT);
+            MY_SHAPE = Constants.CIRCLE;
+            isMyTurn = false;
+        }
+    }
 }

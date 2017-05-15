@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.myhexaville.tictactoe.StartActivity">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="42dp"
+            android:text="Tic Tac Toe"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/single_mode"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="startSingleMode"
+                android:text="Single Mode"
+                android:textAllCaps="false"
+                android:textColor="#00BCD4"
+                android:textSize="36sp" />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/single_mode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:onClick="startMultilayer"
+                android:text="Multiplayer"
+                android:textAllCaps="false"
+                android:textColor="#3F51B5"
+                android:textSize="36sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttons"
+            android:layout_centerHorizontal="true"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="wrap_content"
+                    android:minWidth="100dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:hint="Name" />
+
+                <EditText
+                    android:id="@+id/input_email"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:minWidth="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:hint="Email" />
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/input_password"
+                android:layout_width="wrap_content"
+                android:minWidth="100dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/login"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:onClick="loginWithEmail"
+                android:text="Log in"
+                android:textAllCaps="false"
+                android:textColor="#000" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -3,6 +3,7 @@
     package="com.myhexaville.tictactoe">
 
     <application
+        android:name=".TicTacToeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,6 +13,10 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".StartActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +24,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".wifi.UserListActivity"
+            android:label="@string/title_activity_user_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service
+            android:name=".push_notifications.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".push_notifications.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".push_notifications.MyReceiver">
+            <intent-filter>
+                <action android:name="reject" />
+                <action android:name="accept" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
