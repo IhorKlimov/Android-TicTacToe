@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserListActivity extends AppCompatActivity {
+    private static final String LOG_TAG = "UserListActivity";
     private List<User> users = new ArrayList<>();
     private Adapter adapter;
 
@@ -45,7 +47,7 @@ public class UserListActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             User user = snapshot.getValue(User.class);
-                            if (!dataSnapshot.getKey().equals(Util.getCurrentUserId())) {
+                            if (!snapshot.getKey().equals(Util.getCurrentUserId())) {
                                 users.add(user);
                             }
                         }
