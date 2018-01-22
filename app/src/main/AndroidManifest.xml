@@ -43,12 +43,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".push_notifications.MyReceiver">
-            <intent-filter>
-                <action android:name="reject" />
-                <action android:name="accept" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".push_notifications.MyReceiver"/>
     </application>
 
 </manifest>
