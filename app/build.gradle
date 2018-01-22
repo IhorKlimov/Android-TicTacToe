@@ -1,15 +1,9 @@
 apply plugin: 'com.android.application'
-
-apply plugin: 'me.tatarka.retrolambda'
-
 apply plugin: 'kotlin-android'
 
 buildscript {
     repositories {
         mavenCentral()
-    }
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.5.0'
     }
 }
 
@@ -18,8 +12,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.2"
     dataBinding {
         enabled true
     }
@@ -27,7 +21,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.myhexaville.tictactoe"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,14 +32,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-        modern {
-            minSdkVersion 21
-        }
-        legacy {
-            minSdkVersion 16
-        }
-    }
 }
 
 kapt {
@@ -54,6 +40,7 @@ kapt {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -61,16 +48,20 @@ dependencies {
 
 
     compile 'com.facebook.android:facebook-android-sdk:4.16.1'
+
     compile 'io.reactivex.rxjava2:rxjava:2.0.5'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.google.firebase:firebase-database:10.2.0'
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
-    compile 'com.google.firebase:firebase-auth:10.2.0'
-    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:design:$support_version"
+
+    compile 'com.google.firebase:firebase-database:11.8.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.google.firebase:firebase-auth:11.8.0'
+
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    kapt 'com.android.databinding:compiler:2.3.1'
+
+    kapt 'com.android.databinding:compiler:3.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

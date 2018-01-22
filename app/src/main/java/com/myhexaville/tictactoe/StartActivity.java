@@ -3,19 +3,14 @@ package com.myhexaville.tictactoe;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,7 +35,6 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_start);
-
     }
 
     public void startSingleMode(View view) {
@@ -49,6 +43,9 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void startMultilayer(View view) {
+        if (!arePlayServicesOk()) {
+            return;
+        }
         if (isAnonymous()) {
             binding.inputEmail.setVisibility(VISIBLE);
             binding.inputName.setVisibility(VISIBLE);
@@ -135,5 +132,19 @@ public class StartActivity extends AppCompatActivity {
     private boolean isAnonymous() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         return currentUser == null || currentUser.isAnonymous();
+    }
+
+    private boolean arePlayServicesOk() {
+        final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        final int resultCode = googleAPI.isGooglePlayServicesAvailable(this);
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(resultCode)) {
+                googleAPI.getErrorDialog(this, resultCode, 5000).show();
+            }
+            return false;
+        }
+
+        return true;
     }
 }
