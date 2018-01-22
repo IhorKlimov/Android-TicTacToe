@@ -46,6 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .putExtra("gameId", getCurrentUserId() + "-" + fromId)
                     .putExtra("withId", fromId));
         } else if (type.equals("reject")) {
+            // todo update to Oreo notifications
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
                             .setSmallIcon(R.mipmap.ic_launcher)
