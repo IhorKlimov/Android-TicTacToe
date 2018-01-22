@@ -66,12 +66,19 @@ public class StartActivity extends AppCompatActivity {
         String email = binding.inputEmail.getText().toString();
         String name = binding.inputName.getText().toString();
         String password = binding.inputPassword.getText().toString();
-        if (logginIn
-                || isEmpty(email)
-                || !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                || isEmpty(password)
-                || isEmpty(name)) {
-            Toast.makeText(this, "Enter all fields", LENGTH_SHORT).show();
+        if (logginIn) {
+            return;
+        }
+        if (isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Enter correct email", LENGTH_SHORT).show();
+            return;
+        }
+        if (isEmpty(name)) {
+            Toast.makeText(this, "Enter correct name", LENGTH_SHORT).show();
+            return;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(this, "Password should have at least 6 characters", LENGTH_SHORT).show();
             return;
         }
 
