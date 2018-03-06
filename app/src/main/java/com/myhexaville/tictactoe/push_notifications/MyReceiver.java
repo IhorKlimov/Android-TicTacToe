@@ -20,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.myhexaville.tictactoe.Constants.FIREBASE_CLOUD_FUNCTIONS_BASE;
 import static com.myhexaville.tictactoe.Util.getCurrentUserId;
 
 public class MyReceiver extends BroadcastReceiver {
@@ -41,7 +42,13 @@ public class MyReceiver extends BroadcastReceiver {
                         String withId = intent.getExtras().getString("withId");
 
                         String format = String
-                                .format("https://us-central1-tictactoe-64902.cloudfunctions.net/sendNotification?to=%s&fromPushId=%s&fromId=%s&fromName=%s&type=%s", to, me.getPushId(), getCurrentUserId(), me.getName(), intent.getAction());
+                                .format("%s/sendNotification?to=%s&fromPushId=%s&fromId=%s&fromName=%s&type=%s",
+                                        FIREBASE_CLOUD_FUNCTIONS_BASE,
+                                        to,
+                                        me.getPushId(),
+                                        getCurrentUserId(),
+                                        me.getName(),
+                                        intent.getAction());
 
                         Log.d(LOG_TAG, "onDataChange: " + format);
                         Request request = new Request.Builder()

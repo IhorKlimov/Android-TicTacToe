@@ -30,6 +30,8 @@ public class Constants {
     public static final ArrayList<Vector2> circleTwoPoints;
     public static final ArrayList<Vector2> xOnePoints;
 
+    public static final String FIREBASE_CLOUD_FUNCTIONS_BASE = "https://us-central1-tictactoe-64902.cloudfunctions.net";
+
 
     static {
         circleOnePoints = new ArrayList<>();
