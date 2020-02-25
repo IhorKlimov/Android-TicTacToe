@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,8 +17,6 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,6 +25,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -44,8 +44,6 @@ import static com.myhexaville.tictactoe.Constants.DRAFT;
 import static com.myhexaville.tictactoe.Constants.ENEMY;
 import static com.myhexaville.tictactoe.Constants.ME;
 import static com.myhexaville.tictactoe.Constants.NONE;
-import static com.myhexaville.tictactoe.Constants.X;
-import static com.myhexaville.tictactoe.Util.getCurrentUserId;
 
 public class Board extends FrameLayout {
     private static final String TAG = "CanvasBrushDrawing";

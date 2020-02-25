@@ -1,7 +1,8 @@
 package com.myhexaville.tictactoe;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.myhexaville.tictactoe.model.Victory;
 

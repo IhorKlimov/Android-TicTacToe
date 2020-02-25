@@ -1,8 +1,9 @@
 package com.myhexaville.tictactoe.wifi;
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

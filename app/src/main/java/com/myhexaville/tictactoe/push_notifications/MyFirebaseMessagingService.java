@@ -7,20 +7,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.RemoteInput;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.myhexaville.tictactoe.MainActivity;
 import com.myhexaville.tictactoe.R;
 import com.myhexaville.tictactoe.StartActivity;
 
-import static android.support.v4.app.NotificationCompat.PRIORITY_HIGH;
-import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
+import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 import static com.myhexaville.tictactoe.Util.getCurrentUserId;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -41,6 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             handleInviteIntent(fromPushId, fromId, fromName);
         } else if (type.equals("accept")) {
             startActivity(new Intent(getBaseContext(), MainActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .putExtra("type", "wifi")
                     .putExtra("me", "x")
                     .putExtra("gameId", getCurrentUserId() + "-" + fromId)

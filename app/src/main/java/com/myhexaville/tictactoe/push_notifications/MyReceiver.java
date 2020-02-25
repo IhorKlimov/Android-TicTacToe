@@ -74,6 +74,7 @@ public class MyReceiver extends BroadcastReceiver {
                                     .setValue(null);
 
                             context.startActivity(new Intent(context, MainActivity.class)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                     .putExtra("type", "wifi")
                                     .putExtra("me", "o")
                                     .putExtra("gameId", gameId)
