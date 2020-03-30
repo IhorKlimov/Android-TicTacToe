@@ -4,38 +4,59 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:clickable="false"
-        android:id="@+id/background"
-        android:src="@drawable/chalkboard2" />
-
-
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="62sp"
+        android:layout_marginTop="48dp"
+        android:elevation="4dp"
+        android:gravity="center"
         android:scaleX="0"
         android:scaleY="0"
-        android:textStyle="bold"
-        android:elevation="4dp"
-        android:layout_marginTop="48dp"
-        android:layout_height="wrap_content" />
+        android:textSize="62sp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/turn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="104dp"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <Button
+        android:id="@+id/restart"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:text="RESTART"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="32dp"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        android:text="RESTART"
         android:textColor="@color/colorAccent"
-        android:id="@+id/restart"
-        android:visibility="gone"
         android:textSize="24sp"
-        android:layout_height="wrap_content" />
+        android:visibility="gone" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-1434555711423110/2737416502" />
+
+    <TextView
+        android:id="@+id/score"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="32dp"
+        android:text="GAME: 1 | WIN: 0 | LOOSE: 0"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:visibility="visible" />
 
 </FrameLayout>

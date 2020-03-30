@@ -5,30 +5,38 @@
 
         <variable
             name="user"
-            type="com.myhexaville.tictactoe.model.User" />
+            type="br.com.gorio.jogodavelha.model.User" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_margin="1dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:text="@{user.name}"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            tools:text="Name" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:text="Invite to play"
-            android:id="@+id/invite"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_gravity="end|center_vertical"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="@{user.name}"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                tools:text="Name" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:text="Invite to play"
+                android:id="@+id/invite"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_gravity="end|center_vertical"
+                android:layout_height="wrap_content" />
+
+        </androidx.cardview.widget.CardView>
+
     </FrameLayout>
 </layout>

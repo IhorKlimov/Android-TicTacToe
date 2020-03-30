@@ -1,39 +1,37 @@
 {
   "project_info": {
-    "project_number": "245188738884",
-    "firebase_url": "https://tictactoe-64902.firebaseio.com",
-    "project_id": "tictactoe-64902",
-    "storage_bucket": "tictactoe-64902.appspot.com"
+    "project_number": "64021042890",
+    "firebase_url": "https://jogo-da-velha-abcd007.firebaseio.com",
+    "project_id": "jogo-da-velha-abcd007",
+    "storage_bucket": "jogo-da-velha-abcd007.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:245188738884:android:c195a095c7650e8f",
+        "mobilesdk_app_id": "1:64021042890:android:f99a4d77341dcfa0ca0633",
         "android_client_info": {
-          "package_name": "com.myhexaville.tictactoe"
+          "package_name": "br.com.gorio.jogodavelha"
         }
       },
       "oauth_client": [
         {
-          "client_id": "245188738884-tota5mu5r3m9mfjsf1svbg0gjhc3njrv.apps.googleusercontent.com",
+          "client_id": "64021042890-m5rardjce82obhb463po3n5c5fjk8sjn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC_OVooHG6p-mAjWdY1x72ijbzzoNFpkRw"
+          "current_key": "AIzaSyAy8yNPpJNyyHN_wIZtY4dGxcfSloSurDQ"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64021042890-m5rardjce82obhb463po3n5c5fjk8sjn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

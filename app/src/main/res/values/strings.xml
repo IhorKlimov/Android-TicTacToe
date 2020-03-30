@@ -3,4 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_user_list">UserListActivity</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Type name…</string>
+    <string name="toolbar_title">Players</string>
 </resources>
